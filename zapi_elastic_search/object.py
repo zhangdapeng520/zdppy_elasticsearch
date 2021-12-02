@@ -47,3 +47,11 @@ class EsClient:
             id (int): [description]
         """
         self.conn.delete(index=index, id=id)
+
+    def health(self) -> bool:
+        """获取Elasticsearch集群的健康状态
+
+        Returns:
+            bool: 集群是否剑客
+        """
+        return self.conn.ping()

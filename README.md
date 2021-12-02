@@ -1,7 +1,7 @@
 # zapi_elastic_search
 python快速操作ElasticSearch的组件
 
-## 快速入门案例
+## 一、快速入门案例
 安装
 ```shell
 pip install zapi_elastic_search
@@ -34,3 +34,18 @@ es.add(index="megacorp",id=4,body={"first_name":"xiao","last_name":"wu", 'age': 
 # 根据ID删除
 es.delete(index='megacorp', id=4)
 ```
+
+## 二、常用功能
+
+### 2.1 查看集群的健康状态
+```python
+# 使用python操作ElasticSearch
+from zapi_elastic_search import EsClient
+
+# 连接ES
+es = EsClient()
+
+# 查看集群的健康状态
+print(es.health())
+```
+

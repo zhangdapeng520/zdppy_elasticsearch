@@ -13,21 +13,33 @@ class EsClient:
             self.hosts = [{'host': ip, 'port': port}]
         self.conn = Elasticsearch(self.hosts, timeout = timeout)
     
-    def find(self, index:str, body:Dict):
+    def find(self, index:str=None, body:Dict=None):
         """
         查询数据
         """
-        result = self.conn.search(index = index, body = body)
+        result = self.conn.search(index=index, body=body)
         return result
     
-    def add(self, index:str=None, id:int=None, body:Dict=None):
+    def find_all_index(self) -> Dict:
+        """
+        查询所有索引
+        """
+        return self.conn.indices.get_alias("*")
+    
+    def add(self, index: str = None, doc_type=None, id: int = None, body: Dict = None):
         """
         添加数据
         """
         if id is None:
-            self.conn.index(index=index, body=body)
+            self.conn.index(index=index, doc_type=doc_type, body=body)
         else:
-            self.conn.index(index=index, id=id,  body=body)
+            self.conn.index(index=index, id=id, doc_type=doc_type,  body=body)
+    
+    def add_index(self, index:str) -> None:
+        """
+        新增索引
+        """
+        return self.conn.indices.create(index=index)
     
     def delete(self, index:str, id:int):
         """

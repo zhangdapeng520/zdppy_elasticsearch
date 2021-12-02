@@ -96,3 +96,39 @@ print(es.tasks_get())
 # 查看集群的列表
 print(es.tasks_list())
 ```
+
+## 三、增删改查
+
+### 3.1 增加数据
+```python
+# 使用python操作ElasticSearch
+from zapi_elastic_search import EsClient
+from datetime import datetime
+
+# 连接ES
+es = EsClient()
+
+# 添加索引 已存在会报错
+# print(es.add_index("persons"))
+
+#index,doc_type,id都一致時會覆蓋
+#插入資料
+es.add(index="persons",doc_type="mytype",id=2,body={"name":"李四","age":20,"time":datetime.now()})
+es.add(index="persons", doc_type="mytype", id=4, body={
+       "name1": "李四", "name2": "張三", "age": 20, "time": datetime.now()})
+es.add(index="persons", doc_type="mytype", id=5, body={
+       "name1": "張三", "name2": "李四", "age": 20, "time": datetime.now()})
+es.add(index="persons", doc_type="mytype", id=1, body={
+       "name": "張三", "age": 18, "time": datetime.now()})
+
+#沒有索引就建立
+es.add(index="persons111", doc_type="mytype",id=3,body={"name":"王五","age":20,"time":datetime.now()})
+
+# 查询所有索引
+print(es.find_all_index())
+print(es.indexs())
+
+# 查询所有数据
+res = es.find()
+print(res)
+```

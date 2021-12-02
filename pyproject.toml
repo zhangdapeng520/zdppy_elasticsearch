@@ -1,8 +1,14 @@
 [tool.poetry]
 name = "zapi_elastic_search"
-version = "0.1.0"
-description = ""
-authors = ["pygosuperman <pygosuperman@outlook.com>"]
+version = "1.0.0"
+description = "python操作ElasticSearch的基础组件"
+authors = ["张大鹏 <lxgzhw@163.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/zhangdapeng520/zapi_elastic_search"
+repository = "https://github.com/zhangdapeng520/zapi_elastic_search"
+documentation = "https://github.com/zhangdapeng520/zapi_elastic_search"
+keywords = ["zapi", "ElasticSearch", "search", "zhangdapeng"]
 
 [tool.poetry.dependencies]
 python = "^3.8"

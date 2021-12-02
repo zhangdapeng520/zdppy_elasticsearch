@@ -1,5 +1,5 @@
 from elasticsearch import Elasticsearch
-from typing import Dict,Any
+from typing import Dict,Any,List
 
 class EsClient:
     def __init__(self, ip:str = "127.0.0.1", port:int = 9200, hosts:Dict[str, Any] = None, timeout = 3600) -> None:
@@ -13,12 +13,28 @@ class EsClient:
             self.hosts = [{'host': ip, 'port': port}]
         self.conn = Elasticsearch(self.hosts, timeout = timeout)
     
-    def find(self, index:str=None, body:Dict=None):
+    def find(self, index: str = None, body: Dict = None, doc_type: str = None, id: int = None, filter_path:List=None):
         """
         查询数据
         """
-        result = self.conn.search(index=index, body=body)
+        # ID不为空，调用的是get方法
+        if id is not None: 
+            return self.conn.get(index=index, filter_path=filter_path, doc_type=doc_type, id=id)
+        
+        # 查询所有数据：index不为None，body和ID为None
+        if index is not None and body is None and id is None:
+            return self.conn.search(index=index, filter_path=filter_path, body={"query": {"match_all": {}}})
+        
+        # ID为空，调用的是search方法
+        result = self.conn.search(
+            index=index, body=body, filter_path=filter_path, doc_type=doc_type)
         return result
+
+    def find_count(self, index:str=None, doc_type:str=None) -> Dict:
+        """
+        查询数据总数
+        """
+        return self.conn.count(index=index, doc_type=doc_type)
     
     def find_all_index(self) -> Dict:
         """
@@ -26,7 +42,7 @@ class EsClient:
         """
         return self.conn.indices.get_alias("*")
     
-    def add(self, index: str = None, doc_type=None, id: int = None, body: Dict = None):
+    def add(self, index: str = None, doc_type=None, id: int = None, body: Dict = None) -> Dict:
         """
         添加数据
         """
@@ -41,11 +57,32 @@ class EsClient:
         """
         return self.conn.indices.create(index=index)
     
-    def delete(self, index:str, id:int):
+    def update(self, index:str=None, doc_type=None, id:int=None, body:Dict=None, query:Dict=None) -> Dict:
+        """
+        更新数据
+        """
+        
+        # 条件更新
+        if query is not None:
+            return self.conn.update_by_query(index=index, doc_type=doc_type, body=query)
+        
+        # 单条更新
+        return self.conn.update(index=index, doc_type=doc_type, id=id, body=body)
+        
+    def delete(self, index:str=None, doc_type:str=None, id:int=None, query:Dict=None) -> Dict:
         """
         删除数据
         """
-        self.conn.delete(index=index, id=id)
+        # 根据ID删除
+        if id is not None:
+            return self.conn.delete(index=index, doc_type=doc_type, id=id)
+        
+        # 条件查询
+        if query is not None:
+            return self.conn.delete_by_query(index=index, body=query)
+        
+        # 直接删除索引
+        return self.conn.indices.delete(index)
 
     def health(self) -> bool:
         """

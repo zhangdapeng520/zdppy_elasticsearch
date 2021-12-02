@@ -40,7 +40,7 @@ class EsClient:
             self.conn.index(index=index, id=id,  body=body)
     
     def delete(self, index:str, id:int):
-        """更新数据
+        """删除数据
 
         Args:
             index (str): [description]

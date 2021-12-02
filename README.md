@@ -60,3 +60,39 @@ es = EsClient()
 # 查看集群的基本信息
 print(es.info())
 ```
+
+### 2.3 查看集群其他信息
+```python
+# 使用python操作ElasticSearch
+from zapi_elastic_search import EsClient
+
+# 连接ES
+es = EsClient()
+
+# 查看集群的详细信息
+print(es.detail())
+
+# 查看当前客户端信息
+print(es.client_info())
+
+# 查看所有的索引
+print(es.indexs())
+
+# 查看集群的更多信息
+print(es.stats())
+```
+
+### 2.4 查看集群的任务
+```python
+# 使用python操作ElasticSearch
+from zapi_elastic_search import EsClient
+
+# 连接ES
+es = EsClient()
+
+# 查看集群的任务
+print(es.tasks_get())
+
+# 查看集群的列表
+print(es.tasks_list())
+```

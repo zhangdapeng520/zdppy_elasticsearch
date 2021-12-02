@@ -46,3 +46,33 @@ class EsClient:
         获取集群的基本信息
         """
         return self.conn.info()
+
+    def detail(self) -> Dict:
+        """
+        获取集群的详细信息
+        """
+        return self.conn.cluster.health()
+
+    def client_info(self) -> Dict:
+        """
+        查看当前客户端信息
+        """
+        return self.conn.cluster.client.info()
+
+    def indexs(self) -> str:
+        """
+        查看所有的索引
+        """
+        return self.conn.cat.indices()
+    
+    def stats(self) -> Dict:
+        """
+        查看集群的更多信息
+        """
+        return self.conn.cluster.stats()
+
+    def tasks_get(self):
+        return self.conn.tasks.get()
+    
+    def tasks_list(self):
+        return self.conn.tasks.list()

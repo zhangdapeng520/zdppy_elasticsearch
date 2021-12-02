@@ -14,25 +14,15 @@ class EsClient:
         self.conn = Elasticsearch(self.hosts, timeout = timeout)
     
     def find(self, index:str, body:Dict):
-        """查询数据
-
-        Args:
-            index (str): [description]
-            body (Dict): [description]
-
-        Returns:
-            [type]: [description]
+        """
+        查询数据
         """
         result = self.conn.search(index = index, body = body)
         return result
     
     def add(self, index:str=None, id:int=None, body:Dict=None):
-        """添加数据
-
-        Args:
-            index (str, optional): [description]. Defaults to None.
-            id (int, optional): [description]. Defaults to None.
-            body (Dict, optional): [description]. Defaults to None.
+        """
+        添加数据
         """
         if id is None:
             self.conn.index(index=index, body=body)
@@ -40,18 +30,19 @@ class EsClient:
             self.conn.index(index=index, id=id,  body=body)
     
     def delete(self, index:str, id:int):
-        """删除数据
-
-        Args:
-            index (str): [description]
-            id (int): [description]
+        """
+        删除数据
         """
         self.conn.delete(index=index, id=id)
 
     def health(self) -> bool:
-        """获取Elasticsearch集群的健康状态
-
-        Returns:
-            bool: 集群是否剑客
+        """
+        获取Elasticsearch集群的健康状态
         """
         return self.conn.ping()
+
+    def info(self) -> Dict:
+        """
+        获取集群的基本信息
+        """
+        return self.conn.info()

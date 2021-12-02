@@ -49,3 +49,14 @@ es = EsClient()
 print(es.health())
 ```
 
+### 2.2 查看集群的基本信息
+```python
+# 使用python操作ElasticSearch
+from zapi_elastic_search import EsClient
+
+# 连接ES
+es = EsClient()
+
+# 查看集群的基本信息
+print(es.info())
+```

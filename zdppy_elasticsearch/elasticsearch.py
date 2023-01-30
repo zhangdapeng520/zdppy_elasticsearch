@@ -126,3 +126,27 @@ class ElasticSearch:
         
         return True
     
+    def search(self, index:str, query:dict=None, is_source=True) -> dict:
+        """批量添加数据"""
+        # 校验数据
+        if query is None:
+            query = {
+                "query": {
+                    "match_all": { }
+                }
+            }
+        
+        # 搜索
+        target = f"{self.url}/{index}/_search"
+        try:
+            response = zr.get(f"{self.url}/{index}/_search", json=query, auth=self.auth)
+            data = response.json()
+            if is_source:
+                return [v["_source"] for v in data["hits"]["hits"]]
+            else:
+                return data
+        except Exception as e:
+            print(e)
+        
+        return {}
+    

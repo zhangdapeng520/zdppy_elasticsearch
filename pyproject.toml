@@ -1,18 +1,18 @@
 [tool.poetry]
-name = "zdpapi_elastic_search"
-version = "1.0.0"
+name = "zdppy_elasticsearch"
+version = "1.0.1"
 description = "python操作ElasticSearch的基础组件"
-authors = ["张大鹏 <lxgzhw@163.com>"]
+authors = ["张大鹏 <1156956636@qq.com>"]
 license = "MIT"
 readme = "README.md"
-homepage = "https://github.com/zhangdapeng520/zdpapi_elastic_search"
-repository = "https://github.com/zhangdapeng520/zdpapi_elastic_search"
-documentation = "https://github.com/zhangdapeng520/zdpapi_elastic_search"
-keywords = ["zapi", "ElasticSearch", "search", "zhangdapeng"]
+homepage = "https://github.com/zhangdapeng520/zdppy_elasticsearch"
+repository = "https://github.com/zhangdapeng520/zdppy_elasticsearch"
+documentation = "https://github.com/zhangdapeng520/zdppy_elasticsearch"
+keywords = ["zdppy", "ElasticSearch", "search", "zhangdapeng"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
-elasticsearch = "^7.15.2"
+python = "^3.9"
+zdppy-requests = "^0.1.3"
 
 [tool.poetry.dev-dependencies]
 autopep8 = "^1.6.0"

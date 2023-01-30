@@ -1,3 +1,5 @@
+import uuid
+import json
 import zdppy_requests as zr
 from zdppy_requests.auth import HTTPBasicAuth
 from typing import Union
@@ -85,4 +87,42 @@ class ElasticSearch:
         except Exception as e:
             print(e)
         return False
+    
+    def add_many(self, data:list, index:str=None) -> bool:
+        """批量添加数据"""
+        # 校验数据
+        if not data or len(data) == 0:
+            return False
+        
+        # 添加索引和ID
+        if index is not None:
+            if not index:
+                return False
+
+            new_data = []
+            for doc in data:
+                _id = str(uuid.uuid4())
+                index_doc = {"index": {"_index": index, "_type" : "_doc", "_id" : _id}}
+                new_data.append(index_doc)
+                new_data.append(doc)
+            data = new_data
+
+        # 准备参数
+        target = f"{self.url}/_bulk"
+        payload = '\n'.join([json.dumps(line) for line in data]) + '\n'
+        headers = {           
+            'Content-Type': 'application/x-ndjson'
+        }
+
+        # 添加数据
+        try:
+            response = zr.post(target, data=payload, auth=self.auth, headers=headers)
+            if response.status_code != 200:
+                print(response.text)
+                return False
+        except Exception as e:
+            print(e)
+            return False
+        
+        return True
     
